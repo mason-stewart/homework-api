@@ -1,0 +1,135 @@
+FORMAT: 1A
+
+# The Homework API
+The API that connects students, assignments, classes, and other cool things.
+
+# Classes
+The Class model represents a collection of Student models and at at least one Instructor model.
+
+## Classes Collection [/classes]
+### List all Classes [GET]
++ Response 200 (application/json)
+
+        [
+            {
+                "course": "Frontend Engineering",
+                "course_id": "1",
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "instructor": {
+                    "login": "allanmonzon",
+                    "id": 5644576
+                },
+                "students": [
+                    {
+                        "login": "chad-m",
+                        "id": 6140293
+                    },
+                    {
+                        "login": "tbarth17",
+                        "id": 8423979
+                    }
+                ]
+            }
+        ]
+
+### Create a Class [POST]
++ Request (application/json)
+
+        {
+            "course_id": "1",
+            "instructor": {
+                "login": "allanmonzon",
+                "id": 5644576
+            },
+            "students": [
+                {
+                    "login": "chad-m",
+                    "id": 6140293
+                },
+                {
+                    "login": "tbarth17",
+                    "id": 8423979
+                }
+            ]
+        }
+
+
++ Response 201 (application/json)
+
+        {
+            "course": "Frontend Engineering",
+            "course_id": "1",
+            "id": "8afh3age28gehsal9j23e1ifis",
+            "instructor": {
+                "login": "allanmonzon",
+                "id": 5644576
+            },
+            "students": [
+                {
+                    "login": "chad-m",
+                    "id": 6140293
+                },
+                {
+                    "login": "tbarth17",
+                    "id": 8423979
+                }
+            ]
+        }
+
+
+## Class [/classes/{id}]
+A single Class object with all its details
+
++ Parameters
+    + id (required, number, `1`) ... Numeric `id` of the Class to perform action with. Has example value.
+
+### Retrieve a Class [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            { "id": "8afh3age28gehsal9j23e1ifis",
+                "instructor": {
+                    "login": "allanmonzon",
+                    "id": 5644576
+                },
+                "students": [
+                    {
+                        "login": "chad-m",
+                        "id": 6140293
+                    },
+                    {
+                        "login": "tbarth17",
+                        "id": 8423979
+                    }
+                ]
+            }
+            
+### Remove a Class [DELETE]
+
++ Response 204
+
+
+### Update a Class [PUT]
+
++ Response 200 (application/json)
+
+    + Body
+
+            { "id": "8afh3age28gehsal9j23e1ifis",
+                "instructor": {
+                    "login": "allanmonzon",
+                    "id": 5644576
+                },
+                "students": [
+                    {
+                        "login": "chad-m",
+                        "id": 6140293
+                    },
+                    {
+                        "login": "tbarth17",
+                        "id": 8423979
+                    }
+                ]
+            }
