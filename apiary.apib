@@ -3,7 +3,7 @@ FORMAT: 1A
 # The Homework API
 The API that connects students, assignments, classes, and other cool things.
 
-# Classes
+# Group Classes
 The Class model represents a collection of Student models and at at least one Instructor model.
 
 ## Classes Collection [/classes]
@@ -14,44 +14,64 @@ The Class model represents a collection of Student models and at at least one In
             {
                 "course": "Frontend Engineering",
                 "course_id": "1",
+                "start_date": "1422547777159",
                 "id": "8afh3age28gehsal9j23e1ifis",
                 "instructor": {
-                    "login": "allanmonzon",
-                    "id": 5644576
+                    "github": "jacobthemyth",
+                    "name": "Jake Smith"
+                    "github_id": 5644576
                 },
                 "students": [
                     {
-                        "login": "chad-m",
-                        "id": 6140293
+                        "github": "chad-m",
+                        "name": "Chat Coolguy",
+                        "github_id": 6140293,
+                        "status": "Good Standing"
                     },
                     {
-                        "login": "tbarth17",
-                        "id": 8423979
+                        "github": "tbarth17",
+                        "name": "Coolguy Barth",
+                        "github_id": 8423979,
+                        "status": "Good Standing"
+
                     }
                 ]
             }
         ]
 
 ### Create a Class [POST]
+
 + Request (application/json)
 
-        {
-            "course_id": "1",
-            "instructor": {
-                "login": "allanmonzon",
-                "id": 5644576
-            },
-            "students": [
-                {
-                    "login": "chad-m",
-                    "id": 6140293
+    #### POST fields
+    | field                        | type                   | required             |
+    |------------------------------|------------------------|----------------------|
+    | `course_id`                  | string                 | yes                  |
+    | `instructor`                 | object                 | yes                  |
+    | `current_class_id`           | string                 | no                   |
+
+    \* Either `github_id`, `github`, or both must be provided for the instructor and each student. If either field is provided the other will be looked up automatically.
+
+    + Body
+
+            {
+                "course_id": "1",
+                "start_date": "1422547777159",
+                "instructor": {
+                    "github": "allanmonzon",
+                    "github_id": 5644576
                 },
-                {
-                    "login": "tbarth17",
-                    "id": 8423979
-                }
-            ]
-        }
+                "students": [
+                    {
+                        "github": "chad-m",
+                        "github_id": 6140293
+                    },
+                    {
+                        "github": "tbarth17",
+                        "github_id": 8423979
+                    }
+                ]
+            }
 
 
 + Response 201 (application/json)
@@ -60,18 +80,25 @@ The Class model represents a collection of Student models and at at least one In
             "course": "Frontend Engineering",
             "course_id": "1",
             "id": "8afh3age28gehsal9j23e1ifis",
+            "start_date": "1422547777159",
             "instructor": {
-                "login": "allanmonzon",
-                "id": 5644576
+                "github": "allanmonzon",
+                "github_id": 5644576
             },
             "students": [
                 {
-                    "login": "chad-m",
-                    "id": 6140293
+                    "github": "chad-m",
+                    "name": "Chat Coolguy",
+                    "github_id": 6140293,
+                    "status": "Good Standing"
+
                 },
                 {
-                    "login": "tbarth17",
-                    "id": 8423979
+                    "github": "tbarth17",
+                    "name": "Coolguy Barth",
+                    "github_id": 8423979,
+                    "status": "Good Standing"
+
                 }
             ]
         }
@@ -81,7 +108,7 @@ The Class model represents a collection of Student models and at at least one In
 A single Class object with all its details
 
 + Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Class to perform action with. Has example value.
+    + id (required, string) ... String `id` of the Class.
 
 ### Retrieve a Class [GET]
 
@@ -89,24 +116,34 @@ A single Class object with all its details
 
     + Body
 
-            { "id": "8afh3age28gehsal9j23e1ifis",
+            { 
+                "course": "Frontend Engineering",
+                "course_id": "1",
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "start_date": "1422547777159",
                 "instructor": {
-                    "login": "allanmonzon",
-                    "id": 5644576
+                    "github": "allanmonzon",
+                    "github_id": 5644576
                 },
                 "students": [
                     {
-                        "login": "chad-m",
-                        "id": 6140293
+                        "github": "chad-m",
+                        "name": "Chat Coolguy",
+                        "github_id": 6140293,
+                        "status": "Good Standing"
+
                     },
                     {
-                        "login": "tbarth17",
-                        "id": 8423979
+                        "github": "tbarth17",
+                        "name": "Coolguy Barth",
+                        "github_id": 8423979,
+                        "status": "Good Standing"
                     }
                 ]
             }
             
-### Remove a Class [DELETE]
+
+### Delete a Class [DELETE]
 
 + Response 204
 
@@ -117,19 +154,357 @@ A single Class object with all its details
 
     + Body
 
-            { "id": "8afh3age28gehsal9j23e1ifis",
+            { 
+                "course": "Frontend Engineering",
+                "course_id": "1",
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "start_date": "1422547777159",
                 "instructor": {
-                    "login": "allanmonzon",
-                    "id": 5644576
+                    "github": "allanmonzon",
+                    "github_id": 5644576
                 },
                 "students": [
                     {
-                        "login": "chad-m",
-                        "id": 6140293
+                        "github": "chad-m",
+                        "name": "Chat Coolguy",
+                        "github_id": 6140293,
+                        "status": "Good Standing"
                     },
                     {
-                        "login": "tbarth17",
-                        "id": 8423979
+                        "github": "tbarth17",
+                        "name": "Coolguy Barth",
+                        "github_id": 8423979,
+                        "status": "Good Standing"
                     }
+                ]
+            }
+
+
+## Changing which Students are in a Class [/classes/{id}/students/{student_id}]
+Fetching a Class will always include a basic list of students, so there's no need for an endpoint to list students in a class. This nested endpoint is only for adding and removing Students to and from a Class. Please not that this doesn't create/delete a student model; it just changes its relation to the Class instance.
+
++ Parameters
+    + id (required, string) ... `id` of the Class instance.
+    + student_id (required, string) ... `id` of the Student instance.
+
+### Add a student to a class [POST]
+
++ Request (application/json)
+
+    No JSON payload is required to POST to this endpoint, just specify the Class `id` and Student `id` in the url.
+
+    + Body
+
++ Response 200 (application/json)
+
+    + Body
+
+            { 
+                "course": "Frontend Engineering",
+                "course_id": "1",
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "start_date": "1422547777159",
+                "instructor": {
+                    "github": "allanmonzon",
+                    "github_id": 5644576
+                },
+                "students": [
+                    {
+                        "github": "chad-m",
+                        "name": "Chat Coolguy",
+                        "github_id": 6140293,
+                        "status": "Good Standing"
+                    },
+                    {
+                        "github": "tbarth17",
+                        "name": "Coolguy Barth",
+                        "github_id": 8423979,
+                        "status": "Good Standing"
+                    }
+                ]
+            }
+
+### Remove Student from Class [DELETE]
+
++ Response 204
+
+
+
+# Group Students
+The student model connects a github account with at least one Class, and Submissions.
+
+## Students Collection [/students]
+### List all Students [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "8g2lsig91309halg9a",
+                "github": "chad-m",
+                "name": "Chat Coolguy",
+                "github_id": 6140293,
+                "current_class": {
+                    "id": "8afh3age28gehsal9j23e1ifis",
+                    "course": "Frontend Engineering",
+                    "course_id": "1",
+                    "start_date": "1422547777159",
+                    "status": "Good Standing"
+                },
+                "classes": [
+                    {
+                        "id": "8afh3age28gehsal9j23e1ifis",
+                        "course": "Frontend Engineering",
+                        "course_id": "1",
+                        "start_date": "1422547777159"
+                    },
+                    {
+                        "id": "h28fg02djgh282l93h18sjg1a5",
+                        "course": "Mobile Engineering",
+                        "course_id": "2",
+                        "start_date": "1422541177159"
+                    },
+                ]
+            }
+        ]
+
+### Create a Student [POST]
+
++ Request (application/json)
+
+    #### POST fields
+    
+    | field                        | type                   | required             |
+    |------------------------------|------------------------|----------------------|
+    | `github`                     | integer                | no*                  |
+    | `github_id`                  | string                 | no*                  |
+
+
+    Either `github_id`, `github`, or both must be provided. If either field is provided the other will be looked up automatically.
+
+    + Body
+
+            {
+                "github": "chad-m",
+                "github_id": 6140293,
+                "current_class_id": "8afh3age28gehsal9j23e1ifis"
+            }
+
+
+
++ Response 200 (application/json)
+
+        {
+            "id": "8g2lsig91309halg9a",
+            "github": "chad-m",
+            "name": "Chat Coolguy",
+            "github_id": 6140293,
+            "current_class_id": "8afh3age28gehsal9j23e1ifis",
+            "classes": [
+                {
+                    "id": "8afh3age28gehsal9j23e1ifis",
+                    "course": "Frontend Engineering",
+                    "course_id": "1",
+                    "start_date": "1422547777159"
+                }
+            ]
+        }
+
+## Student [/students/{id}]
+A single Student object 
+
++ Parameters
+    + id (required, string) ... `id` of the Student.
+
+### Retrieve a Student [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": "8g2lsig91309halg9a",
+                "github": "chad-m",
+                "name": "Chat Coolguy",
+                "github_id": 6140293,
+                "current_class_id": "8afh3age28gehsal9j23e1ifis",
+                "classes": [
+                    {
+                        "id": "8afh3age28gehsal9j23e1ifis",
+                        "course": "Frontend Engineering",
+                        "course_id": "1",
+                        "start_date": "1422547777159"
+                    }
+                ]
+            }
+            
+### Remove a Student [DELETE]
+
++ Response 204
+
+
+### Update a Student [PUT]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": "8g2lsig91309halg9a",
+                "github": "chad-m",
+                "name": "Chat Coolguy",
+                "github_id": 6140293,
+                "current_class_id": "8afh3age28gehsal9j23e1ifis",
+                "classes": [
+                    {
+                        "id": "8afh3age28gehsal9j23e1ifis",
+                        "course": "Frontend Engineering",
+                        "course_id": "1",
+                        "start_date": "1422547777159"
+                    }
+                ]
+            }
+
+
+
+# Group Projects
+The project model reprsents a single package from a projects repository.
+
+## Projects Collection [/projects]
+### List all Projects [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "repository": "https://github.com/theironyard.com/js-assignments",
+                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                "version": "0.0.1",
+                "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                "timestamp": "1422547777159",
+                "name": "Surf and Paddle",
+                "title": "html-intro-surf-paddle",
+                "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                "keywords": [
+                    "html",
+                    "css",
+                    "layout",
+                    "responsive"
+                ]
+            },
+            {
+                "id": "a0ab938hgal3g920agalh39ghs",
+                "repository": "https://github.com/theironyard.com/js-assignments",
+                "url": "https://github.com/theironyard/js-assignments/tree/1e9a3f1c9d0c3d4873266d7536e3ad800b695fa3/color-clock",
+                "version": "0.0.1",
+                "sha": "1e9a3f1c9d0c3d4873266d7536e3ad800b695fa3",
+                "timestamp": "1422547777159",
+                "name": "Color Clock",
+                "title": "color-clock",
+                "description": "This assignment serves to reinforce JS fundamentals with setInterval, writing to the DOM, practicing CSS animations, positions, and transforms, and finally breaking down complex problems into simple sequences in code.",
+                "keywords": [
+                    "JavaScript"
+                ]
+            }
+        ]
+
+### Create a Project  [POST]
+
++ Request (application/json)
+
+    #### POST fields
+    
+    | field                        | type                   | required             |
+    |------------------------------|------------------------|----------------------|
+    | `url`                        | string                 | yes                  |
+
+
+    `url` must be a valid url, and must include a SHA (tree/master is not valid!)
+
+    + Body
+
+            {
+                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle"
+            }
+
+
+
++ Response 200 (application/json)
+
+        {
+            "id": "8afh3age28gehsal9j23e1ifis",
+            "repository": "https://github.com/theironyard.com/js-assignments",
+            "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+            "version": "0.0.1",
+            "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+            "timestamp": "1422547777159",
+            "name": "Surf and Paddle",
+            "title": "html-intro-surf-paddle",
+            "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+            "keywords": [
+                "html",
+                "css",
+                "layout",
+                "responsive"
+            ]
+        }
+
+## Project [/projects/{id}]
+A single project.
+
++ Parameters
+    + id (required, string) ... `id` of the project.
+
+### Retrieve a Project [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "repository": "https://github.com/theironyard.com/js-assignments",
+                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                "version": "0.0.1",
+                "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                "timestamp": "1422547777159",
+                "name": "Surf and Paddle",
+                "title": "html-intro-surf-paddle",
+                "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                "keywords": [
+                    "html",
+                    "css",
+                    "layout",
+                    "responsive"
+                ]
+            }
+            
+### Remove a Project [DELETE]
+
++ Response 204
+
+
+### Update a Project [PUT]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "repository": "https://github.com/theironyard.com/js-assignments",
+                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                "version": "0.0.1",
+                "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                "timestamp": "1422547777159",
+                "name": "Surf and Paddle",
+                "title": "html-intro-surf-paddle",
+                "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                "keywords": [
+                    "html",
+                    "css",
+                    "layout",
+                    "responsive"
                 ]
             }
