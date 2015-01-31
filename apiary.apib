@@ -375,43 +375,48 @@ The project model reprsents a single package from a projects repository.
 
 + Response 200 (application/json)
 
-        [
-            {
-                "id": "8afh3age28gehsal9j23e1ifis",
-                "repository": "https://github.com/theironyard.com/js-assignments",
-                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
-                "version": "0.0.1",
-                "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
-                "timestamp": "1422547777159",
-                "name": "Surf and Paddle",
-                "title": "html-intro-surf-paddle",
-                "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
-                "keywords": [
-                    "html",
-                    "css",
-                    "layout",
-                    "responsive"
-                ]
-            },
-            {
-                "id": "a0ab938hgal3g920agalh39ghs",
-                "repository": "https://github.com/theironyard.com/js-assignments",
-                "url": "https://github.com/theironyard/js-assignments/tree/1e9a3f1c9d0c3d4873266d7536e3ad800b695fa3/color-clock",
-                "version": "0.0.1",
-                "sha": "1e9a3f1c9d0c3d4873266d7536e3ad800b695fa3",
-                "timestamp": "1422547777159",
-                "name": "Color Clock",
-                "title": "color-clock",
-                "description": "This assignment serves to reinforce JS fundamentals with setInterval, writing to the DOM, practicing CSS animations, positions, and transforms, and finally breaking down complex problems into simple sequences in code.",
-                "keywords": [
-                    "JavaScript"
-                ]
-            }
-        ]
+    When fetching a list of projects, the payload will not include a `related_files` manifest. `related_files` is included, however, when fetching a single project.
+
+    + Body
+            [
+                {
+                    "id": "8afh3age28gehsal9j23e1ifis",
+                    "repository": "https://github.com/theironyard.com/js-assignments",
+                    "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                    "version": "0.0.1",
+                    "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                    "timestamp": "1422547777159",
+                    "name": "Surf and Paddle",
+                    "title": "html-intro-surf-paddle",
+                    "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                    "keywords": [
+                        "html",
+                        "css",
+                        "layout",
+                        "responsive"
+                    ]
+                },
+                {
+                    "id": "a0ab938hgal3g920agalh39ghs",
+                    "repository": "https://github.com/theironyard.com/js-assignments",
+                    "url": "https://github.com/theironyard/js-assignments/tree/1e9a3f1c9d0c3d4873266d7536e3ad800b695fa3/color-clock",
+                    "version": "0.0.1",
+                    "sha": "1e9a3f1c9d0c3d4873266d7536e3ad800b695fa3",
+                    "timestamp": "1422547777159",
+                    "name": "Color Clock",
+                    "title": "color-clock",
+                    "description": "This assignment serves to reinforce JS fundamentals with setInterval, writing to the DOM, practicing CSS animations, positions, and transforms, and finally breaking down complex problems into simple sequences in code.",
+                    "keywords": [
+                        "JavaScript"
+                    ]
+                }
+            ]
 
 ### Create a Project  [POST]
 
 + Request (application/json)
+
+    When creating a project, `url` is the only field necessary for creation. A `.homework.json` file will be searched for in the project folder, and if found its settings will be saved to the project instance. `.homework.json` is a file created by running `homework init`.
 
     #### POST fields
     
@@ -420,7 +425,7 @@ The project model reprsents a single package from a projects repository.
     | `url`                        | string                 | yes                  |
 
 
-    `url` must be a valid url, and must include a SHA (tree/master is not valid!)
+    `url` must be a valid url, and must include a SHA (tree/master is not valid!).
 
     + Body
 
@@ -447,6 +452,11 @@ The project model reprsents a single package from a projects repository.
                 "css",
                 "layout",
                 "responsive"
+            ],
+            "related_files": [
+                "surf-and-paddle.psd",
+                "images/logo.png",
+                "fonts/octocons.woff"
             ]
         }
 
@@ -477,7 +487,12 @@ A single project.
                     "css",
                     "layout",
                     "responsive"
-                ]
+                 ],
+                    "related_files": [
+                    "surf-and-paddle.psd",
+                    "images/logo.png",
+                    "fonts/octocons.woff"
+                 ]
             }
             
 ### Remove a Project [DELETE]
@@ -486,6 +501,15 @@ A single project.
 
 
 ### Update a Project [PUT]
++ Request (application/json)
+  
+    Payload properties other than `url` will be ignored. Updates to `.homewor.json` should already be published at the new url.
+
+    + Body
+
+            {
+                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle"
+            }
 
 + Response 200 (application/json)
 
@@ -506,5 +530,10 @@ A single project.
                     "css",
                     "layout",
                     "responsive"
+                ],
+                "related_files": [
+                    "surf-and-paddle.psd",
+                    "images/logo.png",
+                    "fonts/octocons.woff"
                 ]
             }
