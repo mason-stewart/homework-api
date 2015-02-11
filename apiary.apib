@@ -497,10 +497,23 @@ A single project.
             
 ### Remove a Project [DELETE]
 
-+ Response 204
++ Response 409
+
+    Because projects are immutable, DELETE requests will always return a 409 "Conflict" status.
 
 
 ### Update a Project [PUT]
+
++ Response 409 (application/json)
+
+    Because projects are immutable, PUT and PATH requests will always return a 409 "Conflict" status.
+
+    + Body
+            {
+                "message": "Projects are immutable, and cannot be updated. To make a new copy of a project with optional overwriting properties, POST to /projects/{id}."
+            }
+
+### Duplicate a Project [POST]
 + Request (application/json)
   
     Payload properties other than `url` will be ignored. Updates to `.homewor.json` should already be published at the new url.
@@ -536,4 +549,226 @@ A single project.
                     "images/logo.png",
                     "fonts/octocons.woff"
                 ]
+            }
+
+
+# Group Assignments
+The project model reprsents a single package from a projects repository.
+
+## Assignments Collection [/cohorts/{id}/assignments]
+
++ Parameters
+    + id (required, string) ... `id` of the cohort.
+
+### List all Assignments [GET]
+
++ Response 200 (application/json)
+
+    Blah.
+
+    + Body
+
+            [
+                {
+                    "cohort_id": "239f28agb20aogi1bia0ghj4we9",
+                    "project_id": "8923hgal38oral8f1ihfaljgaa9",
+                    "week": 4,
+                    "due_date": "1422547777159"
+                }
+            ]
+
+
+
+### Create a Assignment  [POST]
+
++ Request (application/json)
+
+
+    #### POST fields
+    
+    | field                        | type                   | required             |
+    |------------------------------|------------------------|----------------------|
+    | `cohort_id`                  | string                 | yes                  |
+    | `project_id`                 | string                 | yes                  |
+    | `week`                       | integer                | yes                  |
+    | `order`                      | integer                | no*                  |
+    | `due_date`                   | string                 | yes                  |
+    
+    The `week` property acts as a gatekeeper, i.e. students cannot fetch assignments from upcoming weeks. Hence, if you complete all of Week 1's homework, you cannot fetch assignments from Week 2 until that week has begun. `week` should be an integer representing that week and is not indexed by zero; Week 1 is represented by `week: 1`.
+
+    `order` provides ordinality for assignments. By default it will be placed as the last assignment in that week, i.e. when adding an assigment to a week that already has 3 assignments, it will be automatically given an `order` of 3 (zero-indexed). This behavior can be overridden by denoting the position manually. In this case any successive assignments will be moved one space further.
+
+    + Body
+
+            {
+                "cohort_id": "239f28agb20aogi1bia0ghj4we9",
+                "project_id": "8923hgal38oral8f1ihfaljgaa9",
+                "week": 4,
+                "due_date": "1422547777159"
+            }
+
+
+
++ Response 200 (application/json)
+
+        {
+            "id": "gi24ohgag8in2la92340284",
+            "cohort_id": "239f28agb20aogi1bia0ghj4we9",
+            "project_id": "8923hgal38oral8f1ihfaljgaa9",
+            "week": 4,
+            "order": 0,
+            "due_date": "1422547777159",
+            project: {
+                "id": "8afh3age28gehsal9j23e1ifis",
+                "repository": "https://github.com/theironyard.com/js-assignments",
+                "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                "version": "0.0.1",
+                "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                "timestamp": "1422547777159",
+                "name": "Surf and Paddle",
+                "title": "html-intro-surf-paddle",
+                "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                "keywords": [
+                    "html",
+                    "css",
+                    "layout",
+                    "responsive"
+                ],
+                "related_files": [
+                    "surf-and-paddle.psd",
+                    "images/logo.png",
+                    "fonts/octocons.woff"
+                ]
+            }
+        }
+
+## Next Assignment [/cohorts/{id}/assignments/next]
+
++ Parameters
+    + id (required, string) ... `id` of the cohort.
+
+### Get next Assignment [GET]
+
++ Response 200 (application/json)
+
+    Blah.
+
+    + Body
+
+            {
+                "id": "gi24ohgag8in2la92340284",
+                "cohort_id": "239f28agb20aogi1bia0ghj4we9",
+                "project_id": "8923hgal38oral8f1ihfaljgaa9",
+                "week": 4,
+                "order": 0,
+                "due_date": "1422547777159",
+                project: {
+                    "id": "8afh3age28gehsal9j23e1ifis",
+                    "repository": "https://github.com/theironyard.com/js-assignments",
+                    "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                    "version": "0.0.1",
+                    "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                    "timestamp": "1422547777159",
+                    "name": "Surf and Paddle",
+                    "title": "html-intro-surf-paddle",
+                    "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                    "keywords": [
+                        "html",
+                        "css",
+                        "layout",
+                        "responsive"
+                    ],
+                    "related_files": [
+                        "surf-and-paddle.psd",
+                        "images/logo.png",
+                        "fonts/octocons.woff"
+                    ]
+                }
+            }
+
+
+## Assignment [/cohort/{cohord_id}/assignments/{id}]
+A single project.
+
++ Parameters
+    + cohort_id (required, string) ... `id` of the project.
+    + id (required, string) ... `id` of the assignment.
+
+### Retrieve a Assignment [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": "gi24ohgag8in2la92340284",
+                "cohort_id": "239f28agb20aogi1bia0ghj4we9",
+                "project_id": "8923hgal38oral8f1ihfaljgaa9",
+                "week": 4,
+                "order": 0,
+                "due_date": "1422547777159",
+                project: {
+                    "id": "8afh3age28gehsal9j23e1ifis",
+                    "repository": "https://github.com/theironyard.com/js-assignments",
+                    "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                    "version": "0.0.1",
+                    "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                    "timestamp": "1422547777159",
+                    "name": "Surf and Paddle",
+                    "title": "html-intro-surf-paddle",
+                    "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                    "keywords": [
+                        "html",
+                        "css",
+                        "layout",
+                        "responsive"
+                    ],
+                    "related_files": [
+                        "surf-and-paddle.psd",
+                        "images/logo.png",
+                        "fonts/octocons.woff"
+                    ]
+                }
+            }
+            
+### Remove a Assignment [DELETE]
+
++ Response 204
+
+### Update a Assignment [PUT]
+
++ Response 200 (application/json)
+
+
+    + Body
+
+            {
+                "id": "gi24ohgag8in2la92340284",
+                "cohort_id": "239f28agb20aogi1bia0ghj4we9",
+                "project_id": "8923hgal38oral8f1ihfaljgaa9",
+                "week": 4,
+                "order": 0,
+                "due_date": "1422547777159",
+                project: {
+                    "id": "8afh3age28gehsal9j23e1ifis",
+                    "repository": "https://github.com/theironyard.com/js-assignments",
+                    "url": "https://github.com/theironyard/js-assignments/tree/bbd9f77989384afac6753fa2cbf32b8367e221db/html-intro-surf-paddle",
+                    "version": "0.0.1",
+                    "sha": "bbd9f77989384afac6753fa2cbf32b8367e221db",
+                    "timestamp": "1422547777159",
+                    "name": "Surf and Paddle",
+                    "title": "html-intro-surf-paddle",
+                    "description": "As a developer on the web, you will sometimes be tasked with creating an html page simply from an image file.  In this assignment, you'll be taking an image and turning it into a functioning website.",
+                    "keywords": [
+                        "html",
+                        "css",
+                        "layout",
+                        "responsive"
+                    ],
+                    "related_files": [
+                        "surf-and-paddle.psd",
+                        "images/logo.png",
+                        "fonts/octocons.woff"
+                    ]
+                }
             }
